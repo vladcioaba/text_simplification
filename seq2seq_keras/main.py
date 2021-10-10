@@ -20,7 +20,10 @@ def main():
               num_encoder_tokens = num_encoder_tokens,
               num_decoder_tokens = num_decoder_tokens,
               max_encoder_seq_length = max_encoder_seq_length,
-              max_decoder_seq_length = max_decoder_seq_length)
+              max_decoder_seq_length = max_decoder_seq_length,
+              encoder_input_data = encoder_input_data,
+              decoder_input_data = decoder_input_data,
+              decoder_target_data = decoder_target_data)
     enc, dec = load(
                     save_file = saved_model,
                     latent_dim = 512,
