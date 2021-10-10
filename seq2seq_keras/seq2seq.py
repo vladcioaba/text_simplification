@@ -67,7 +67,7 @@ def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
     for i, (input_text, target_text) in enumerate(zip(input_texts, target_texts)):
         for t, char in enumerate(input_text):
             encoder_input_data[i, t, input_token_index[char]] = 1.    # earlier we have made a numpy array of zeros so here we are one hot encoding by puttong 1 on places chars are found.
-        encoder_input_data[i, t + 1:, input_token_index[' ']] = 1.
+        #encoder_input_data[i, t + 1:, input_token_index[' ']] = 1.
         for t, char in enumerate(target_text):
             # decoder_target_data is ahead of decoder_input_data by one timestep
             decoder_input_data[i, t, target_token_index[char]] = 1.
@@ -75,8 +75,8 @@ def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
                 # decoder_target_data will be ahead by one timestep
                 # and will not include the start character.
                 decoder_target_data[i, t - 1, target_token_index[char]] = 1.
-        decoder_input_data[i, t + 1:, target_token_index[' ']] = 1.
-        decoder_target_data[i, t:, target_token_index[' ']] = 1.
+        #decoder_input_data[i, t + 1:, target_token_index[' ']] = 1.
+        #decoder_target_data[i, t:, target_token_index[' ']] = 1.
 
     return input_texts, target_texts, input_characters, target_characters, num_encoder_tokens, num_decoder_tokens, max_encoder_seq_length, max_decoder_seq_length, input_token_index, target_token_index, encoder_input_data, decoder_input_data, decoder_target_data
 
@@ -150,8 +150,6 @@ def load(save_file = 's2s.h5',
 
     decoder_model = Model([decoder_inputs] + decoder_states_inputs,
                           [decoder_outputs] + decoder_states)
-
-    
 
     return encoder_model, decoder_model
 

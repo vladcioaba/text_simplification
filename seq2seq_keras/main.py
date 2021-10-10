@@ -14,7 +14,7 @@ def main():
               input_texts = input_texts,
               target_texts = target_texts,
               batch_size = 64,
-              epochs = 100,
+              epochs = (sys.argv[3] if len(sys.argv) > 2 else 100),
               latent_dim = 512,
               save_file = saved_model,
               num_encoder_tokens = num_encoder_tokens,
