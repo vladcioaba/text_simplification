@@ -39,13 +39,12 @@ def main():
     reverse_target_char_index = dict(
         (i, char) for char, i in target_token_index.items())
 
-    sen_in = 'We as a society want to defend them.'
     sen_out = decodeSequence(enc, dec,
                             num_encoder_tokens, num_decoder_tokens,
                             input_token_index, target_token_index,
                             reverse_input_char_index, reverse_target_char_index, 
                             max_encoder_seq_length, max_decoder_seq_length,
-                            sen_in)
+                            sys.argv[2])
 
 if __name__ == "__main__":
     main()
