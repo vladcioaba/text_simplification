@@ -5,7 +5,17 @@ from keras.models import load_model
 from keras.layers import Input, LSTM, Dense
 import numpy as np
 
-def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
+def removePunctuation(str):
+    punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+    for ele in str:
+        if ele in punc:
+            str = str.replace(ele, "")
+    return str
+
+def cleanStringAndSplit(str):
+    return ' '.join(removePunctuation(str).split()).split(' ') # remove multiple whitespaces
+
+def initCorpus(num_samples = 10000, data_path = ''):
     # Vectorize the data.
     input_texts = []
     target_texts = []
@@ -21,8 +31,8 @@ def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
         if (num_samples <= 0):
             break;
 
-        input_text = lines[i].split(' ')
-        target_text = lines[i+1].split(' ')
+        input_text = cleanStringAndSplit(lines[i])
+        target_text = cleanStringAndSplit(lines[i+1])
         target_text = ['\t'] + target_text + ['\n']
         input_texts.append(input_text)
         target_texts.append(target_text)
@@ -37,6 +47,9 @@ def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
                 
     input_words = sorted(list(input_words))
     target_words = sorted(list(target_words))
+    print(input_words)
+    print("*****")
+    print(target_words)
     num_encoder_tokens = len(input_words)
     num_decoder_tokens = len(target_words)
 

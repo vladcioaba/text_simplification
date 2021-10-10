@@ -5,7 +5,7 @@ from keras.models import load_model
 from keras.layers import Input, LSTM, Dense
 import numpy as np
 
-def initCorpus(num_samples = 10000, data_path = 'fra.txt'):
+def initCorpus(num_samples = 10000, data_path = ''):
     # Vectorize the data.
     input_texts = []
     target_texts = []
