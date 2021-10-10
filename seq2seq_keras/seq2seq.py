@@ -84,7 +84,7 @@ def trainAndSave(input_texts = [],
           target_texts = [],
           batch_size = 64,
           epochs = 100,
-          latent_dim = 256,
+          latent_dim = 512,
           save_file = 's2s.h5',
           num_encoder_tokens = 0,
           num_decoder_tokens = 0,
@@ -126,26 +126,26 @@ def trainAndSave(input_texts = [],
     model.save(save_file)
 
 def load(save_file = 's2s.h5',
-         latent_dim = 256,
+         latent_dim = 512,
          num_encoder_tokens = 0,
          num_decoder_tokens = 0):
     model = load_model(save_file)
 
-    encoder_inputs = Input(shape=(None, num_encoder_tokens))
+    encoder_inputs = model.input[0]
     encoder = LSTM(latent_dim, return_state=True)
-    encoder_outputs, state_h, state_c = encoder(encoder_inputs)
+    encoder_outputs, state_h, state_c = model.layers[2].output
     encoder_states = [state_h, state_c]
     # Define sampling models
     encoder_model = Model(encoder_inputs, encoder_states)
     
-    decoder_state_input_h = Input(shape=(latent_dim,))
-    decoder_state_input_c = Input(shape=(latent_dim,))
+    decoder_state_input_h = Input(shape=(latent_dim,), name='input_3')
+    decoder_state_input_c = Input(shape=(latent_dim,), name='input_4')
     decoder_states_inputs = [decoder_state_input_h, decoder_state_input_c]
-    decoder_inputs = Input(shape=(None, num_decoder_tokens))
-    decoder_lstm = LSTM(latent_dim, return_sequences=True, return_state=True)
+    decoder_inputs = model.input[1]
+    decoder_lstm = model.layers[3]
     decoder_outputs, state_h, state_c = decoder_lstm(decoder_inputs, initial_state=decoder_states_inputs)
     decoder_states = [state_h, state_c]
-    decoder_dense = Dense(num_decoder_tokens, activation='softmax')
+    decoder_dense = model.layers[4]
     decoder_outputs = decoder_dense(decoder_outputs)
 
     decoder_model = Model([decoder_inputs] + decoder_states_inputs,
