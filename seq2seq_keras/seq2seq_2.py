@@ -13,7 +13,12 @@ def removePunctuation(str):
     return str.lower()
 
 def cleanStringAndSplit(str):
-    return ' '.join(removePunctuation(str).split()).split(' ') # remove multiple whitespaces
+    arr2 = []
+    arr = ' '.join(removePunctuation(str).split()).split(' ') # remove multiple whitespaces
+    for i in arr:
+        arr2.append(i)
+        #arr2.append(' ')
+    return arr2
 
 def initCorpus(num_samples = 10000, data_path = ''):
     # Vectorize the data.
@@ -47,9 +52,6 @@ def initCorpus(num_samples = 10000, data_path = ''):
                 
     input_words = sorted(list(input_words))
     target_words = sorted(list(target_words))
-    print(input_words)
-    print("*****")
-    print(target_words)
     num_encoder_tokens = len(input_words)
     num_decoder_tokens = len(target_words)
 
@@ -99,7 +101,7 @@ def trainAndSave(input_texts = [],
           target_texts = [],
           batch_size = 64,
           epochs = 100,
-          latent_dim = 512,
+          latent_dim = 256,
           save_file = 's2s.h5',
           num_encoder_tokens = 0,
           num_decoder_tokens = 0,
@@ -141,7 +143,7 @@ def trainAndSave(input_texts = [],
     model.save(save_file)
 
 def load(save_file = 's2s.h5',
-         latent_dim = 512,
+         latent_dim = 256,
          num_encoder_tokens = 0,
          num_decoder_tokens = 0):
     model = load_model(save_file)
@@ -181,15 +183,16 @@ def decodeSequence(encoder_model,
                     max_decoder_seq_length,
                     input_text):
     input_seq = np.zeros((1, max_encoder_seq_length, num_encoder_tokens), dtype='float32')
-    for t, word in enumerate(input_text):
+    for t, word in enumerate(cleanStringAndSplit(input_text)):
         input_seq[0, t, input_token_index[word]] = 1.
-    input_seq[0, t + 1:, input_token_index[' ']] = 1.
+    #input_seq[0, t + 1:, input_token_index['\t']] = 1.
 
     states_value = encoder_model.predict(input_seq)    
     decoded_sentence_in = ''
     for token_index in input_seq[0]:
         result = np.where(token_index == 1)
-        decoded_sentence_in += reverse_input_word_index[result[0][0]]
+        if result[0]:
+            decoded_sentence_in += reverse_input_word_index[result[0][0]] + ' '
     print(decoded_sentence_in)
     print("******")
 
@@ -208,7 +211,7 @@ def decodeSequence(encoder_model,
         # Sample a token
         sampled_token_index = np.argmax(output_tokens[0, -1, :])
         sampled_word = reverse_target_word_index[sampled_token_index]
-        decoded_sentence += sampled_word
+        decoded_sentence += sampled_word + ' '
 
         # Exit condition: either hit max length
         # or find stop word.

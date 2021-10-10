@@ -168,7 +168,7 @@ def decodeSequence(encoder_model,
     input_seq = np.zeros((1, max_encoder_seq_length, num_encoder_tokens), dtype='float32')
     for t, char in enumerate(input_text):
         input_seq[0, t, input_token_index[char]] = 1.
-    input_seq[0, t + 1:, input_token_index[' ']] = 1.
+    #input_seq[0, t + 1:, input_token_index[' ']] = 1.
 
     states_value = encoder_model.predict(input_seq)    
     decoded_sentence_in = ''

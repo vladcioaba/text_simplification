@@ -26,7 +26,7 @@ def main():
               decoder_target_data = decoder_target_data)
     enc, dec = load(
                     save_file = saved_model,
-                    latent_dim = 512,
+                    latent_dim = 256,
                     num_encoder_tokens = num_encoder_tokens,
                     num_decoder_tokens = num_decoder_tokens)
 
