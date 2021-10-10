@@ -1,7 +1,7 @@
-from seq2seq import initCorpus
-from seq2seq import trainAndSave
-from seq2seq import load
-from seq2seq import decodeSequence
+from seq2seq_2 import initCorpus
+from seq2seq_2 import trainAndSave
+from seq2seq_2 import load
+from seq2seq_2 import decodeSequence
 import sys
 import os.path
 
@@ -15,7 +15,7 @@ def main():
               target_texts = target_texts,
               batch_size = 64,
               epochs = (int(sys.argv[3]) if len(sys.argv) > 2 else 100),
-              latent_dim = 512,
+              latent_dim = 256,
               save_file = saved_model,
               num_encoder_tokens = num_encoder_tokens,
               num_decoder_tokens = num_decoder_tokens,
