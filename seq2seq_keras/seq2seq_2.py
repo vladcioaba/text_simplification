@@ -10,7 +10,7 @@ def removePunctuation(str):
     for ele in str:
         if ele in punc:
             str = str.replace(ele, "")
-    return str
+    return str.lower()
 
 def cleanStringAndSplit(str):
     return ' '.join(removePunctuation(str).split()).split(' ') # remove multiple whitespaces
