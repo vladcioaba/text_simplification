@@ -1,7 +1,7 @@
-from seq2seq import initCorpus
-from seq2seq import trainAndSave
-from seq2seq import load
-from seq2seq import decodeSequence
+from seq2seq_2 import initCorpus
+from seq2seq_2 import trainAndSave
+from seq2seq_2 import load
+from seq2seq_2 import decodeSequence
 import sys
 import os.path
 
