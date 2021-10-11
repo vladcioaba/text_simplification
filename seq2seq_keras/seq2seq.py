@@ -174,7 +174,8 @@ def decodeSequence(encoder_model,
     decoded_sentence_in = ''
     for token_index in input_seq[0]:
         result = np.where(token_index == 1)
-        decoded_sentence_in += reverse_input_char_index[result[0][0]]
+        if result[0]:
+            decoded_sentence_in += reverse_input_char_index[result[0][0]]
     print(decoded_sentence_in)
     print("******")
 
